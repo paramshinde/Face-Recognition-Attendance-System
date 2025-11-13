@@ -1,0 +1,14 @@
+{
+    "admin": {
+        "password": "admin123",
+        "role": "admin"
+    },
+    "teacher1": {
+        "password": "teachpass",
+        "role": "teacher"
+    },
+    "student1": {
+        "password": "studypass",
+        "role": "student"
+    }
+}

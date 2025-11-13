@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Attendance</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .list-group-item {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Live Attendance Stream</h1>
+            <a href="{{ url_for('stop_cctv_and_redirect') }}" class="btn btn-danger">Stop Recognition</a>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Recently Detected</h5>
+            </div>
+            <ul id="realTimeAttendanceList" class="list-group list-group-flush">
+                </ul>
+        </div>
+    </div>
+    
+    <script>
+    const eventSource = new EventSource('/attendance_stream');
+    const attendanceList = document.getElementById('realTimeAttendanceList');
+
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+      
+        if (data.status === "Present") {
+            li.textContent = `${data.name} - Present at ${data.timestamp}`;
+            li.style.color = "green";
+        } else if (data.status === "Already Logged") {
+            li.textContent = `${data.name} - Already logged in at ${data.timestamp}`;
+            li.style.color = "blue";
+        } else {
+            
+            li.textContent = `${data.name} - ${data.status}`;
+        }
+        
+        attendanceList.prepend(li);
+    };
+
+    eventSource.onerror = function(err) {
+        console.error("EventSource failed:", err);
+        eventSource.close();
+    };
+</script>
+</body>
+</html>

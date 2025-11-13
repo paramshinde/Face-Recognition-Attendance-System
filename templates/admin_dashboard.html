@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+        .dashboard-container {
+            margin-top: 50px;
+            max-width: 960px;
+        }
+        .welcome-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .welcome-card h1 {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .alert {
+            font-size: 1rem;
+        }
+        .btn-action {
+            width: 100%;
+            height: 80px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-action i {
+            margin-right: 10px;
+        }
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-success-custom {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-info-custom {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-warning-custom {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        .btn-danger-custom {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-dark-custom {
+            background-color: #343a40;
+            border-color: #343a40;
+            color: white;
+        }
+        .btn-dark-custom:hover {
+            background-color: #1d2124;
+            color: white;
+        }
+        .btn-logout {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container dashboard-container">
+        <div class="welcome-card mb-4">
+            <h1><i class="fas fa-user-shield"></i> Welcome, Admin</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} mt-3">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <a href="{{ url_for('start_and_view_cctv') }}" class="btn btn-action btn-success-custom h-100 d-flex align-items-center justify-content-center">
+                    <i class="fas fa-video fa-2x"></i> Start Recognition
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <a href="{{ url_for('register_face') }}" class="btn btn-action btn-primary-custom">
+                            <i class="fas fa-user-plus"></i> Register New Face
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="{{ url_for('retrain_model') }}" class="btn btn-action btn-warning-custom">
+                            <i class="fas fa-brain"></i> Retrain Recognition Model
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="{{ url_for('export_attendance') }}" class="btn btn-action btn-info-custom">
+                            <i class="fas fa-file-excel"></i> Export Attendance to Excel
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <a href="{{ url_for('logout') }}" class="btn btn-action btn-logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="card mt-4 p-4">
+            <h5 class="mb-3"><i class="fas fa-cog"></i> Settings</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="{{ url_for('set_interval') }}" method="post" class="d-flex align-items-center mb-3">
+                        <div class="form-group flex-grow-1 mb-0 mr-2">
+                            <label for="intervalInput" class="mb-1">Set Logging Interval (in minutes):</label>
+                            <input type="number" name="interval" class="form-control" id="intervalInput" placeholder="e.g. 5" required min="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom">Update Interval</button>
+                    </form>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group d-flex flex-column align-items-start">
+                        <label class="mb-1">User Management:</label>
+                        <a href="{{ url_for('manage_users') }}" class="btn btn-action btn-dark-custom">
+                            <i class="fas fa-users-cog"></i> Manage Users
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+    <div class="row">
+        <div class="col-12">
+            <a href="/analytics" class="btn btn-action btn-info-custom">
+                <i class="fas fa-chart-bar"></i> View Analytics
+            </a>
+        </div>
+        <div class="col-12">
+            <a href="/review_unknowns" class="btn btn-action btn-secondary">
+                <i class="fas fa-search"></i> Review Unknowns
+            </a>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

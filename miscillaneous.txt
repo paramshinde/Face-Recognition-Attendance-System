@@ -1,0 +1,11 @@
+1: sqlite3 attendance.db
+2: .tables;
+3: PRAGMA table_info(attendance);
+4: SELECT * FROM attendance;
+5:INSERT INTO attendance VALUES (529, 'amar', datetime('now', 'localtime'), 'Absent');
+6:INSERT INTO attendance (id, username, timestamp, status) VALUES (530, 'rohan', datetime('now', 'localtime'), 'Present');
+7: SELECT * FROM attendance WHERE username = 'param';
+8:SELECT * FROM attendance WHERE date(timestamp) = '2025-09-18';
+10: UPDATE attendance SET status = 'Corrected' WHERE id = 526;
+11: DELETE FROM attendance WHERE id = 525;
+

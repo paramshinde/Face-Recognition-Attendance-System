@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Review Unknown Faces</title>
+  <style>
+    .face-card {
+      display: inline-block;
+      margin: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+    }
+    img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+    <form action="/delete_all_unknowns" method="POST" style="margin: 15px;">
+  <button type="submit" style="background-color:darkred; color:white; padding:10px; border-radius:6px;">
+     Delete All Unknown Faces
+  </button>
+</form>
+
+  <h2> Review Unknown Faces</h2>
+  {% if images %}
+    {% for img in images %}
+    <div class="face-card">
+        <img src="{{ url_for('unknown_file', filename=img) }}" alt="Unknown Face">
+        <form action="/assign_unknown" method="POST" style="margin-top:5px;">
+            <input type="hidden" name="filename" value="{{ img }}">
+            <input type="text" name="name" placeholder="Enter student name" required>
+            <button type="submit">Assign</button>
+        </form>
+        <form action="/delete_unknown/{{ img }}" method="POST" style="margin-top:5px;">
+            <button type="submit" style="background-color:red; color:white;">Delete</button>
+        </form>
+    </div>
+
+    {% endfor %}
+  {% else %}
+    <p>No unknown faces available.</p>
+  {% endif %}
+</body>
+</html>
