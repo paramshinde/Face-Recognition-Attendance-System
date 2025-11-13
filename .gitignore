@@ -1,1 +1,7 @@
 .venv/
+__pycache__/
+faces_embeddings_done_4classes.npz
+svm_model_160x160
+label_encoder
+attendance.xlsx
+*.log
